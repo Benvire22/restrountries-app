@@ -5,9 +5,9 @@ interface Props {
     onClick: () => void;
 }
 
-const CountryItem: React.FC<Props> = ({name}) => {
+const CountryItem: React.FC<Props> = ({name, onClick}) => {
     return (
-        <span>{name}</span>
+        <span onClick={onClick}>{name}</span>
     );
 };
 

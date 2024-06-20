@@ -1,6 +1,6 @@
 export interface Country {
     name: string;
-    code: string;
+    alpha3Code: string;
 }
 
 export interface CountryInfo {

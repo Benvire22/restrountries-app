@@ -9,13 +9,15 @@ interface Props {
 
 const Countries: React.FC<Props> = ({countries, onClick}) => {
     return (
-        <div>
+        <ul>
             {countries.length > 0 ? countries.map((country) => (
-                <CountryItem name={country.name} key={country.code} onClick={() => onClick(country.code)} />
+                <li key={country.alpha3Code + country.name}>
+                    <CountryItem name={country.name} key={country.alpha3Code} onClick={() => onClick(country.alpha3Code)} />
+                </li>
             )) : (
                 <h3>Country list is empty!</h3>
             )}
-        </div>
+        </ul>
     );
 };
 
