@@ -5,10 +5,10 @@ interface Props {
     onClick: () => void;
 }
 
-const Country: React.FC<Props> = ({name}) => {
+const CountryItem: React.FC<Props> = ({name}) => {
     return (
         <span>{name}</span>
     );
 };
 
-export default Country;
+export default CountryItem;
