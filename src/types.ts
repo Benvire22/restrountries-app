@@ -3,16 +3,6 @@ export interface Country {
     alpha3Code: string;
 }
 
-export interface CountryApi {
-    name: string;
-    borders: string[];
-    capital: string;
-    flag: string;
-    region: string;
-    alpha3Code: string;
-    population: number;
-}
-
 export interface CountryInfo {
     name: string;
     alpha3Code: string;

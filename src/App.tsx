@@ -1,6 +1,6 @@
 import {useCallback, useEffect, useState} from "react";
-import Countries from "./components/Countries/Countries";
-import {BorderCountry, Country, CountryApi, CountryInfo} from "./types";
+import CountriesList from "./components/CountriesList/CountriesList";
+import {BorderCountry, Country, CountryInfo} from "./types";
 import "./App.css";
 import CurrentCountryBlock from "./components/CurrentCountryBlock/CurrentCountryBlock";
 import axios from "axios";
@@ -9,6 +9,7 @@ import {ALL_COUNTRIES_URL, ALPHA_CODE_URL, COUNTRY_NAME_URL, REST_COUNTRIES_URL}
 const App = () => {
     const [countries, setCountries] = useState<Country[]>([]);
     const [currentCountry, setCurrentCountry] = useState<CountryInfo | null>(null);
+
     const apiRequest  = useCallback( async () => {
         try {
             const {data} = await axios.get<Country[]>(REST_COUNTRIES_URL + ALL_COUNTRIES_URL);
@@ -19,10 +20,10 @@ const App = () => {
         }
     }, []);
 
-    const requestCountryInfo = async (code: string) => {
-
-        if (code) {
-            const {data} = await axios.get<CountryApi>(REST_COUNTRIES_URL + ALPHA_CODE_URL + code);
+    const requestCountryInfo = useCallback( async (code: string) => {
+        if (code && code !== currentCountry?.alpha3Code) {
+            const {data} = await axios.get<CountryInfo>(REST_COUNTRIES_URL + ALPHA_CODE_URL + code);
+            console.log(data);
 
             if (data.borders) {
                 const promises = data.borders.map(async (border) => {
@@ -56,18 +57,16 @@ const App = () => {
                 };
                 setCurrentCountry(country);
             }
-
         }
-    };
+    },[currentCountry]);
 
     useEffect(() => {
-        void apiRequest();
+        apiRequest().catch(e => console.error(e));
     }, [apiRequest]);
-
 
     return (
         <div className="App" style={{display: 'flex'}}>
-            <Countries countries={countries} onClick={requestCountryInfo} />
+            <CountriesList countries={countries} onClick={requestCountryInfo} />
             <CurrentCountryBlock country={currentCountry} />
         </div>
     );

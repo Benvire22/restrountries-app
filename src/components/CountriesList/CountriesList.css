@@ -1,0 +1,17 @@
+.CountriesList {
+    border: 1px solid #3990a0;
+    flex-basis: 25%;
+    overflow: auto;
+    height: 550px;
+}
+
+.CountriesList ul {
+    list-style: none;
+    margin: 0;
+    padding: 10px;
+}
+
+.CountriesListTitle {
+    text-align: center;
+    font-size: 25px;
+}
