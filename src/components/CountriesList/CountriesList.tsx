@@ -12,8 +12,7 @@ const CountriesList: React.FC<Props> = ({countries, onClick}) => {
   return (
     <nav className="CountriesList">
       {countries.length > 0 ?
-        (
-          <ul>
+        (<ul>
             {countries.map((country) => (
               <CountryItem
                 key={country.alpha3Code + country.name}
@@ -24,7 +23,6 @@ const CountriesList: React.FC<Props> = ({countries, onClick}) => {
           </ul>)
         : <h3 className="CountriesListTitle">Countries list is empty!</h3>}
     </nav>
-
   );
 };
 

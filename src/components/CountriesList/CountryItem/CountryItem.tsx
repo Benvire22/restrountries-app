@@ -7,9 +7,7 @@ interface Props {
 }
 
 const CountryItem: React.FC<Props> = ({name, onClick}) => {
-  return (
-    <li className="CountryItem" onClick={onClick}>{name}</li>
-  );
+  return <li className="CountryItem" onClick={onClick}>{name}</li>;
 };
 
 export default CountryItem;

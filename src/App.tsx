@@ -1,11 +1,11 @@
 import {useCallback, useEffect, useState} from 'react';
+import axios from 'axios';
 import CountriesList from './components/CountriesList/CountriesList';
 import {BorderCountry, Country, CountryInfo} from './types';
-import './App.css';
-import CurrentCountryBlock from './components/CurrentCountryBlock/CurrentCountryBlock';
-import axios from 'axios';
 import {ALL_COUNTRIES_URL, ALPHA_CODE_URL, COUNTRY_NAME_URL, REST_COUNTRIES_URL} from './constants';
+import CurrentCountryBlock from './components/CurrentCountryBlock/CurrentCountryBlock';
 import Loader from './components/ul/Loader';
+import './App.css';
 
 const App = () => {
   const [countries, setCountries] = useState<Country[]>([]);
@@ -34,7 +34,6 @@ const App = () => {
     apiRequest().catch(e => console.error(e));
   }, [apiRequest]);
 
-
   const requestCountryInfo = useCallback(async (code: string) => {
     try {
       setIsLoading(true);
@@ -53,16 +52,18 @@ const App = () => {
           const promises = data.borders.map(async (border) => {
             return await axios.get<BorderCountry>(REST_COUNTRIES_URL + ALPHA_CODE_URL + border + COUNTRY_NAME_URL);
           });
+
           const countries = await Promise.all(promises);
 
           country.borders = countries.map((country) => {
             const {data} = country;
             return data.name;
           });
-
           setCurrentCountry(country);
+
         } else {
           setCurrentCountry(country);
+
         }
       }
     } catch (e) {

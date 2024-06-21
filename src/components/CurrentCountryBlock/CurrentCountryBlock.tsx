@@ -2,8 +2,6 @@ import React from 'react';
 import {CountryInfo} from '../../types';
 import './CurrentCountryBlock.css';
 
-// import Loader from "../ul/Loader";
-
 interface Props {
   country: CountryInfo | null;
 }
