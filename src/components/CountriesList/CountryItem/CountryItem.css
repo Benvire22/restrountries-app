@@ -1,15 +1,15 @@
 .CountryItem {
-    font-size: 22px;
-    border: 1px solid #3990a0;
-    margin-bottom: 10px;
-    border-radius: 4px;
-    text-align: center;
-    padding: 10px 15px;
+  font-size: 22px;
+  border: 1px solid #3990a0;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  text-align: center;
+  padding: 10px 15px;
 }
 
 .CountryItem:hover {
-    transition: 0.2s;
-    background: #89c6d5;
-    color: #fff;
+  transition: 0.2s;
+  background: #89c6d5;
+  color: #fff;
 }
 
