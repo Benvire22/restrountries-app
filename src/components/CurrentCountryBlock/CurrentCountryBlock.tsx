@@ -24,7 +24,7 @@ const CurrentCountryBlock: React.FC<Props> = ({country}) => {
             </div>
             <div className="CurrentCountryBlock-flag"><img src={country.flag} alt={country.name}/></div>
           </div>
-          <div>
+          <div className="CurrentCountryBlock-bottom">
             {country.borders ? (
               <>
                 <h3>Borders with:</h3>
@@ -36,7 +36,7 @@ const CurrentCountryBlock: React.FC<Props> = ({country}) => {
           </div>
         </>
       ) : <div>
-        <h1>Empty, select some country</h1>
+        <h1 className="CurrentCountryBlock-subtitle">Empty, select some country</h1>
       </div>}
     </div>
   );

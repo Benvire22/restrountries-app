@@ -11,26 +11,43 @@ const App = () => {
   const [countries, setCountries] = useState<Country[]>([]);
   const [currentCountry, setCurrentCountry] = useState<CountryInfo | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<boolean>(false);
+
+  const handleError = (e: Error) => {
+    console.error(e.message);
+    setError(true);
+  };
 
   const apiRequest = useCallback(async () => {
     try {
       setIsLoading(true);
       const {data} = await axios.get<Country[]>(REST_COUNTRIES_URL + ALL_COUNTRIES_URL);
-      console.log(data);
       setCountries(data);
     } catch (e) {
-      console.error(e);
+      handleError((e as Error));
     } finally {
       setIsLoading(false);
     }
   }, []);
+
+  useEffect(() => {
+    apiRequest().catch(e => console.error(e));
+  }, [apiRequest]);
+
 
   const requestCountryInfo = useCallback(async (code: string) => {
     try {
       setIsLoading(true);
       if (code && code !== currentCountry?.alpha3Code) {
         const {data} = await axios.get<CountryInfo>(REST_COUNTRIES_URL + ALPHA_CODE_URL + code);
-        console.log(data);
+        const country: CountryInfo = {
+          name: data.name,
+          capital: data.capital,
+          flag: data.flag,
+          alpha3Code: data.alpha3Code,
+          region: data.region,
+          population: data.population
+        };
 
         if (data.borders) {
           const promises = data.borders.map(async (border) => {
@@ -38,50 +55,32 @@ const App = () => {
           });
           const countries = await Promise.all(promises);
 
-          const borders = countries.map((country) => {
+          country.borders = countries.map((country) => {
             const {data} = country;
             return data.name;
           });
 
-          const country = {
-            name: data.name,
-            capital: data.capital,
-            flag: data.flag,
-            alpha3Code: data.alpha3Code,
-            borders: borders,
-            region: data.region,
-            population: data.population
-          };
           setCurrentCountry(country);
         } else {
-          const country = {
-            name: data.name,
-            capital: data.capital,
-            flag: data.flag,
-            alpha3Code: data.alpha3Code,
-            region: data.region,
-            population: data.population
-          };
           setCurrentCountry(country);
         }
       }
     } catch (e) {
-      console.error(e);
+      handleError((e as Error));
     } finally {
       setIsLoading(false);
     }
   }, [currentCountry]);
 
-  useEffect(() => {
-    apiRequest().catch(e => console.error(e));
-  }, [apiRequest]);
-
   return (
-    <div className="App" style={{display: 'flex'}}>
-      <Loader isLoading={isLoading} color={'#fff'}/>
-      <CountriesList countries={countries} onClick={requestCountryInfo}/>
-      <CurrentCountryBlock country={currentCountry}/>
-    </div>
+    <>
+      {error ? <h2 className="errorMessage">Sorry, unexpected network error was occurred!</h2> : null}
+      <div className="App">
+        <Loader isLoading={isLoading} color={'#fff'}/>
+        <CountriesList countries={countries} onClick={requestCountryInfo}/>
+        <CurrentCountryBlock country={currentCountry}/>
+      </div>
+    </>
   );
 };
 
